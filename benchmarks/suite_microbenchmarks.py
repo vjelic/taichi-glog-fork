@@ -8,9 +8,10 @@ from utils import dump2json
 class MicroBenchmark:
     suite_name = "microbenchmarks"
     config = {
-        "cuda": {"enable": True},
+        "cuda": {"enable": False},
         "vulkan": {"enable": False},
         "opengl": {"enable": False},
+        "amdgpu": {"enable": True},
     }
 
     def __init__(self):
