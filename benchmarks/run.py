@@ -1,5 +1,6 @@
 import os
 import warnings
+import argparse
 
 from suite_microbenchmarks import MicroBenchmark
 from taichi._lib import core as ti_python_core
@@ -39,15 +40,27 @@ class BenchmarkSuites:
             info_dict[suite.suite_name] = suite.get_benchmark_info()
         return info_dict
 
+def parse_cmdln()
+    parser = argparse.ArgumentParser(prog='run.py', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--archs", 
+            choices=['amdgpu', 'cuda', 'vulkan', 'opengl', 'metal', 'x64'],
+            required=True, help="Architecture to benchmark")
+    parser.add_argument("--benchmark_plan", 
+            choices=['AtomicOpsPlan', 'FillPlan', 'MathOpsPlan', 
+                'MatrixOpsPlan', 'MemcpyPlan', 'SaxpyPlan', 'Stencil2DPlan'],
+            required=True, help="Benchmark plan to run")
+    args = parser.parse_args()
+    return args
 
 def main():
+    args = parse_cmdln()
     benchmark_dir = os.path.join(os.getcwd(), "results")
     os.makedirs(benchmark_dir, exist_ok=True)
 
     # init & run
     info = BenchmarkInfo()
     suites = BenchmarkSuites()
-    suites.run()
+    suites.run(args.archs, args.benchmark_plan)
     # save benchmark results & info
     suites.save(benchmark_dir)
     info.suites = suites.get_suites_info()

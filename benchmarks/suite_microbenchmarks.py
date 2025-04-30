@@ -27,18 +27,17 @@ class MicroBenchmark:
         info_dict["archs"] = arch_list
         return info_dict
 
-    def run(self):
-        for arch, item in self.config.items():
-            if item["enable"] == True:
-                arch_results = {}
-                self._info[arch] = {}
-                for plan in benchmark_plan_list:
-                    plan_impl = plan(arch)
-                    results = plan_impl.run()
-                    self._info[arch][plan_impl.name] = results["info"]
-                    arch_results[plan_impl.name] = results["results"]
+    def run(self, arch_list, benchmark_plans):
+        for arch in arch_list:
+            arch_results = {}
+            self._info[arch] = {}
+            for plan in benchmark_plans:
+                plan_impl = plan(arch)
+                results = plan_impl.run()
+                self._info[arch][plan_impl.name] = results["info"]
+                arch_results[plan_impl.name] = results["results"]
 
-                self._results[arch] = arch_results
+            self._results[arch] = arch_results
 
     def save_as_json(self, suite_dir="./"):
         for arch in self._results:
