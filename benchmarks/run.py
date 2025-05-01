@@ -24,9 +24,9 @@ class BenchmarkSuites:
         for suite in benchmark_suites:
             self._suites.append(suite())
 
-    def run(self):
+    def run(self, arch, benchmark_plan):
         for suite in self._suites:
-            suite.run()
+            suite.run(arch, benchmark_plan)
 
     def save(self, benchmark_dir="./"):
         for suite in self._suites:
@@ -40,9 +40,9 @@ class BenchmarkSuites:
             info_dict[suite.suite_name] = suite.get_benchmark_info()
         return info_dict
 
-def parse_cmdln()
+def parse_cmdln():
     parser = argparse.ArgumentParser(prog='run.py', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("--archs", 
+    parser.add_argument("--arch",
             choices=['amdgpu', 'cuda', 'vulkan', 'opengl', 'metal', 'x64'],
             required=True, help="Architecture to benchmark")
     parser.add_argument("--benchmark_plan", 
@@ -60,14 +60,14 @@ def main():
     # init & run
     info = BenchmarkInfo()
     suites = BenchmarkSuites()
-    suites.run(args.archs, args.benchmark_plan)
+    suites.run(args.arch, args.benchmark_plan)
     # save benchmark results & info
-    suites.save(benchmark_dir)
-    info.suites = suites.get_suites_info()
-    info_path = os.path.join(benchmark_dir, "_info.json")
-    info_str = dump2json(info)
-    with open(info_path, "w") as f:
-        print(info_str, file=f)
+#    suites.save(benchmark_dir)
+#    info.suites = suites.get_suites_info()
+#    info_path = os.path.join(benchmark_dir, "_info.json")
+#    info_str = dump2json(info)
+#    with open(info_path, "w") as f:
+#        print(info_str, file=f)
 
 
 if __name__ == "__main__":
