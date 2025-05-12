@@ -62,12 +62,12 @@ def main():
     suites = BenchmarkSuites()
     suites.run(args.arch, args.benchmark_plan)
     # save benchmark results & info
-#    suites.save(benchmark_dir)
-#    info.suites = suites.get_suites_info()
-#    info_path = os.path.join(benchmark_dir, "_info.json")
-#    info_str = dump2json(info)
-#    with open(info_path, "w") as f:
-#        print(info_str, file=f)
+    suites.save(benchmark_dir)
+    info.suites = suites.get_suites_info()
+    info_path = os.path.join(benchmark_dir, "_info.json")
+    info_str = dump2json(info)
+    with open(info_path, "w") as f:
+        print(info_str, file=f)
 
 
 if __name__ == "__main__":
